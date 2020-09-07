@@ -1,18 +1,15 @@
-// including the path package so that we can locate the correct file path for HTML 
+var path = require('path'); // importing path module to use for express get requests 
 
-var path = require('path'); 
- 
-// var fs = require('fs');
-// var express = require('express');
+module.exports = function(app) { 
 
-module.exports = function(app) {
-    
-    app.get('/notes', function(req, res) {
-        res.sendFile(path.join(__dirname, '../Develop/public/notes.html' ));
+    app.get('/notes', function(req, res) { // get request to return the notes.html file 
+        res.sendFile(path.join(__dirname, "..//public/notes.html"));
+        console.log("Successfully returned notes.html")
     });
 
-    app.get('*', function(req, res) {
-        res.sendFile(path.join(__dirname, '../Develop/public/index.html' )); 
-    });  
+    app.get('*', function(req, res) {  // get request that will return the index.html file if no matching route is found this in other words acts as a default 
+        res.sendFile(path.join(__dirname, "..//public/index.html"));
+        console.log("Successfully returned index.html")
+    });
 };
 
