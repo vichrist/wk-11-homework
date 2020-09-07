@@ -1,23 +1,13 @@
+var express = require('express'); // importing express module
 
-var express = require('express');
+var app = express(); //using node module express to create a server 
 
-// // creating an express server 
-var app = express();  
+app.use(express.static('public'));  // server is serving static content & rendering both index and note HTMLs
 
-// // set the port 
-var PORT = 8080;
-
-// // middleware that handles the data parsing 
+app.use(express.json()); //middleware to handle data parsing 
 app.use(express.urlencoded({ extended: true})); 
-app.use(express.json()); 
 
-// // routers that point our server to the route files 
+require("./routes/htmlRoutes")(app); // directing the route for the HTML to the server
 
-require('./routes/htmlRoutes')(app);
-require('./routes/apiRoutes')(app); 
+app.listen(8080, () => console.log('Listening on PORT 8080')); //set up PORT & listener
 
-// // PORT listener 
-
-app.listen(PORT, function() { 
-    console.log('Listening on PORT: ' + PORT)
-});
