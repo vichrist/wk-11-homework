@@ -8,6 +8,7 @@ app.use(express.json()); //middleware to handle data parsing
 app.use(express.urlencoded({ extended: true})); 
 
 require("./routes/htmlRoutes")(app); // directing the route for the HTML to the server
+require("./routes/apiRoutes")(app);
 
 app.listen(8080, () => console.log('Listening on PORT 8080')); //set up PORT & listener
 

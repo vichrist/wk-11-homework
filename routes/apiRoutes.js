@@ -7,14 +7,6 @@ var db = require('../Develop/db/db.json');
 const { response } = require("express");
 const { json } = require("body-parser");
 
-var dbNew = db => {
-    fs.readFileSync(path.join(__dirname, '../Develop/db/db.json'),
-    fs.writeFileSync(path.join(__dirname, '../Develop/db/db.json'), 
-    JSON.stringify(db))); error => {
-        if (error) throw error;}
-}; 
-
-
 module.exports = function(app) { 
    
     //GET REQUEST: read the db.json file and return saved notes as JSON. 
