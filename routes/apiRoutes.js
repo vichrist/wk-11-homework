@@ -32,24 +32,4 @@ module.exports = function(app) {
     });  
 }; 
 
-// app.post("/api/notes", (request, response) => {
-//     var userNote = request.body; // create variable to save note to the request body 
-//     var newUserID = db.length; // create variable that is assigned the length of the db.json file 
-//     db.push(userNote);
-//     userNote.newUserID = newUserID + 1; // combine variables above so new id can add to the length of the db.json file 
-    
-//     fs.readFile('../Develop/db/db.json', function (err, data) {
-//         var data = JSON.parse(data);
-//         data.push(userNote); 
-//     fs.writeFile('../Develop/db/db.json', JSON.stringify(data), function (error) {
-//         if (error) throw error; 
-//         console.log("Successfully Written");
-//     })
-//     });
-//     response.json(userNote); // responding (returning) db file to client 
-    
-//     // console.log('dbfile', db); // testing purposes only 
-//     // console.log('note', userNote); // testing purposes only 
-//     // console.log('userid', newUserID); // testing purposes only 
-//     }); 
-// }; 
+
