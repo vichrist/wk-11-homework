@@ -1,4 +1,5 @@
-var path = require('path'); // importing path module to use for express get requests 
+const fs = require("fs");
+var path = require('path');
 
 module.exports = function(app) { 
 
