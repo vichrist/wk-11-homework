@@ -1,52 +1,66 @@
-// pulling in dependencies 
+// pulling in file system dependency 
 
 var fs = require("fs");
-var path = require('path');
-var db = require('../Develop/db/db.json');
 
-const { response } = require("express");
-const { json } = require("body-parser");
+// creating variable that has a function assigned to it 
+var newNotes = myNotes();
 
+// function that will read the db.json file, parse the data and create a new user ID 
 
-// function to read the db.json file and create new id as user inputs new notes 
+function myNotes() {
+    
+    var dbData = fs.readFileSync('./Develop/db/db.json', 'utf8');
 
-var newNotes = getNotes();
-function getNotes() {
+    var dbDataParsed = JSON.parse(dbData);
 
-    var data = fs.readFileSync('Develop/db/db.json', 'utf8');
-    var dataNotes = JSON.parse(data);
-
-    for (let i = 0; i < dataNotes.length; i++) {
-        dataNotes[i].id = '' + i;
+    for (let i = 0; i < dbDataParsed.length; i++) {
+        dbDataParsed[i].id = '' + i;
     }
 
-    return dataNotes;
+    return dbDataParsed;
 }
 
+// GET/POST/DELETE CALLS 
+
+module.exports = ((app) => {
+
+    // GET REQUEST: 
+
+    app.get('/api/notes', ((req, res) => {
+
+        newNotes = myNotes();
+
+        res.json(newNotes);
+    }));
+
+    // POST REQUEST: 
+
+    app.post('/api/notes', ((req, res) => {
+
+        newNotes.push(req.body);
+
+        fs.writeFileSync('./Develop/db/db.json', JSON.stringify(newNotes), 'utf8');
+
+        res.json(true);
+    }));
 
 
-module.exports = function(app) { 
-   
-    //GET REQUEST:
-        app.get('/api/notes', ((req, res) => {
-            newNotes = getNotes(); 
-            res.json(newNotes); 
-        }));
-      
+    // DELETE REQUEST: 
+
+    app.delete('/api/notes/:id',  ((req, res) => {
+
+        var ID = req.params.id;
         
-    //POST REQUEST: Should receive a new note to save on the request body, add it to the `db.json` file, and then return the new note to the client.
+        var noteDel = newNotes.filter(noteDel => {
 
-        app.post('/api/notes', ((req, res) => {
-            newNotes.push(req.body);
-            var newUserID = (db.length).toString();
-            newNotes.id = newUserID; 
+            return noteDel.id === ID; })[0];
 
-            fs.writeFileSync('Develop/db/db.json', JSON.stringify(newNotes), 'utf8');
-            res.json(newNotes);
-            console.log('newnotes', newNotes);
-        }));
+        var index = newNotes.indexOf(noteDel);
 
-    //DELETE REQUEST: 
+        newNotes.splice(index, 1);
 
+        fs.writeFileSync('./Develop/db/db.json', JSON.stringify(newNotes), 'utf8');
 
-};
+        res.json('This Note Has Been Deleted');
+    }));
+})
